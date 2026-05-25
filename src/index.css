@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Colors - Obsidian Gold Luxe */
+  --color-bg-primary: #040404;
+  --color-bg-secondary: #0A0A0A;
+  --color-bg-card: #111111;
+  --color-bg-elevated: #181715;
+  --color-bg-glass: rgba(10, 10, 10, 0.75);
+  
+  --color-gold-primary: #FFD700;
+  --color-gold-champagne: #FFEA00;
+  --color-gold-soft: #FFF275;
+  
+  --color-text-main: #FFFFFF;
+  --color-text-secondary: #C4C4C4;
+  --color-text-muted: #7A7A7A;
+  
+  --color-border-gold: rgba(255, 215, 0, 0.3);
+  --color-border-active: rgba(255, 234, 0, 0.8);
+  --color-glow-gold: rgba(255, 215, 0, 0.4);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar adjustments for premium aesthetics */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-bg-elevated);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-gold);
+}
+
+/* New Luxury Animations */
+@keyframes gold-flicker {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  50% { transform: translateY(-30px) scale(1.5); opacity: 0.8; }
+  100% { transform: translateY(-60px) scale(1); opacity: 0; }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-gold-flicker {
+  animation: gold-flicker 4s infinite ease-in-out;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s infinite ease-in-out;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s infinite ease-in-out;
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Luxury Card Shadow */
+.card-luxury {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px var(--color-glow-gold);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-luxury:hover {
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 215, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-luxury {
+  background: linear-gradient(145deg, #FFD700, #CAA500);
+  color: #0A0A0A;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.btn-luxury:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+}
+
+/* Fix input classes globally mapping to Tailwind colors won't work in CSS if they are configured via JS, so we'll use utility definitions for the admin inputs */
+.admin-input {
+  background-color: #FFF8D6 !important;
+  color: #000000 !important;
+}
+.admin-input::placeholder {
+  color: #555555 !important;
+}
+.admin-input:focus {
+  outline: none;
+  border-color: #FFD700 !important;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.35) !important;
+}
+
+/* Global Form Styles for Luxury Yellow Theme */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  background-color: #FFF8D6 !important;
+  color: #000000 !important;
+  border-color: rgba(255, 215, 0, 0.5) !important;
+  border-width: 1px;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #555555 !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #FFD700 !important;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.35) !important;
+  outline: none !important;
+}
+
+/* Specific prompt textarea overrides general rules */
+.prompt-textarea {
+  background-color: var(--color-bg-primary) !important;
+  color: var(--color-gold-champagne) !important;
+  border-color: var(--color-gold-primary) !important;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1) !important;
+}
+.prompt-textarea::placeholder {
+  color: #B8A85A !important;
+}
+.prompt-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.35) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6A6A6A !important;
+}
+
+/* Specific overrides for the creative prompt textarea */
+#text-prompt-input {
+  background-color: #0B0B08 !important;
+  color: #FFF8D6 !important;
+  border-color: transparent !important;
+  box-shadow: none !important; /* Managed by wrapper if needed, or apply directly */
+}
+#text-prompt-input:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+#text-prompt-input::placeholder {
+  color: #B8A85A !important;
+}
+
+/* The wrapper of text-prompt-input should have the glow */
+.prompt-wrapper-focus:focus-within {
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.35) !important;
+  border-color: #FFD700 !important;
+}
+
+/* Glassmorphism panel */
+.glass-panel {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-gold);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+

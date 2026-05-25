@@ -1,0 +1,6 @@
+{
+  "name": "Imagen Studio",
+  "description": "Imagen Studio is a gorgeous premium AI image recipe and prompt synthesis website with a live interactive lab workspace, preset showcases, and Gemini expansion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
