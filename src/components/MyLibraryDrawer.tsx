@@ -62,9 +62,9 @@ export default function MyLibraryDrawer({
           </div>
         ) : (
           <div className="space-y-4">
-            {images.map((img) => (
+            {images.map((img, idx) => (
               <div 
-                key={img.id}
+                key={`${img.id}-${idx}`}
                 className="group bg-bg-elevated/50/50 hover:bg-bg-elevated/50 p-3.5 rounded-2xl border border-slate-150 hover:border-slate-300 transition flex items-center gap-4 relative overflow-hidden"
               >
                 {/* Micro Thumbnail */}

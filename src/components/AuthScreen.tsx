@@ -28,6 +28,19 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
 
   const clearError = () => setErrorMsg("");
 
+  const parseSafeJson = async (res: Response): Promise<any> => {
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      try {
+        return await res.json();
+      } catch (e: any) {
+        throw new Error(`JSON_PARSE_ERROR: ${e?.message || "Invalid JSON syntax"}`);
+      }
+    } else {
+      throw new Error(`NON_JSON_RESPONSE: Server returned status ${res.status}`);
+    }
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
@@ -42,20 +55,21 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formattedEmail, password })
       });
-      const data = await res.json();
+      const data = await parseSafeJson(res);
       if (!res.ok) {
         setErrorMsg(data.error || "An error occurred.");
       } else {
         setDisplayedCode(data.verificationCode);
         setAuthState("verify");
       }
-    } catch(err) {
-      setErrorMsg("An error occurred during sign up.");
+    } catch(err: any) {
+      console.error("[Sign Up Network Error]", err);
+      setErrorMsg("Login service is temporarily unavailable. Please try again after deployment configuration is completed.");
     } finally {
       setIsLoading(false);
     }
@@ -71,12 +85,12 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formattedEmail, password })
       });
-      const data = await res.json();
+      const data = await parseSafeJson(res);
       if (!res.ok) {
         setErrorMsg(data.error || "Invalid email or password.");
       } else {
@@ -89,8 +103,9 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
         localStorage.setItem("whisk_user_role", data.role);
         onSuccess(data.role);
       }
-    } catch(err) {
-      setErrorMsg("Unable to login right now. Please try again.");
+    } catch(err: any) {
+      console.error("[Login Network Error]", err);
+      setErrorMsg("Login service is temporarily unavailable. Please try again after deployment configuration is completed.");
     } finally {
       setIsLoading(false);
     }
@@ -104,12 +119,12 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/verify", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/auth/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code: verificationCodeInput })
       });
-      const data = await res.json();
+      const data = await parseSafeJson(res);
       if (!res.ok) {
         setErrorMsg(data.error || "Invalid verification code.");
       } else {
@@ -117,8 +132,9 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
         localStorage.setItem("whisk_user_role", data.role);
         onSuccess(data.role);
       }
-    } catch(err) {
-      setErrorMsg("An error occurred during verification.");
+    } catch(err: any) {
+      console.error("[Verification Network Error]", err);
+      setErrorMsg("Login service is temporarily unavailable. Please try again after deployment configuration is completed.");
     } finally {
       setIsLoading(false);
     }
@@ -128,19 +144,20 @@ export default function AuthScreen({ onSuccess, onViewPricing }: AuthScreenProps
     clearError();
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/generate-new-code", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/auth/generate-new-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
       });
-      const data = await res.json();
+      const data = await parseSafeJson(res);
       if (!res.ok) {
         setErrorMsg(data.error || "An error occurred.");
       } else {
         setDisplayedCode(data.verificationCode);
       }
-    } catch(err) {
-      setErrorMsg("An error occurred. Please try again.");
+    } catch(err: any) {
+      console.error("[Generate Code Network Error]", err);
+      setErrorMsg("Login service is temporarily unavailable. Please try again after deployment configuration is completed.");
     } finally {
       setIsLoading(false);
     }

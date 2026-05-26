@@ -236,7 +236,7 @@ export default function App() {
     const token = localStorage.getItem("whisk_auth_token");
     if (!token) return;
     try {
-      const res = await fetch("/api/user/me", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/user/me", {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -325,7 +325,7 @@ export default function App() {
     const token = localStorage.getItem("whisk_auth_token");
     let cost = 0;
     try {
-      const startRes = await fetch("/api/generations/start", {
+      const startRes = await fetch((import.meta.env.VITE_API_URL || "") + "/api/generations/start", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ quality: settings.quality })
@@ -372,7 +372,7 @@ export default function App() {
     try {
       // Use the exact prompt string exactly as entered without prompt enhancement or modifications
       const finalBlendedPrompt = currentPrompt;
-      console.log("[Whisk Generation Engine] Outgoing image request prompt:", finalBlendedPrompt);
+      console.log("[Imagen Studio Engine] Outgoing image request prompt:", finalBlendedPrompt);
 
       // Request a dynamic, free text-to-image graphic
       const randomSeed = Math.floor(Math.random() * 9999999);
@@ -388,7 +388,7 @@ export default function App() {
       if (scenes.length > 0) payload.references.push({ type: "scene", dataUrl: scenes[0].dataUrl });
       if (styles.length > 0) payload.references.push({ type: "style", dataUrl: styles[0].dataUrl });
 
-      const proxyRes = await fetch("/api/generate-image", {
+      const proxyRes = await fetch((import.meta.env.VITE_API_URL || "") + "/api/generate-image", {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -417,7 +417,7 @@ export default function App() {
       // Verify if this is still the active request before checking status or preloading
       if (requestId !== activeRequestIdRef.current) {
         clearInterval(progressTimer);
-        console.log("[Whisk] Ignored old generation request fetch response:", requestId);
+        console.log("[Imagen Studio] Ignored old generation request fetch response:", requestId);
         return;
       }
 
@@ -454,7 +454,7 @@ export default function App() {
 
       // Complete credit deduction
       try {
-        const completeRes = await fetch("/api/generations/complete", {
+        const completeRes = await fetch((import.meta.env.VITE_API_URL || "") + "/api/generations/complete", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify({ quality: settings.quality })
@@ -470,7 +470,7 @@ export default function App() {
       // Discard errors from canceled/old requests
       if (requestId !== activeRequestIdRef.current) {
         clearInterval(progressTimer);
-        console.log("[Whisk] Ignored stale error for request:", requestId);
+        console.log("[Imagen Studio] Ignored stale error for request:", requestId);
         return;
       }
 

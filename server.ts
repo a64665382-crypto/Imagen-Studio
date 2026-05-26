@@ -5,13 +5,15 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 // Load environment variables
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = 3000;
 
+app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
 // --- Simple in-memory auth for "secure custom backend" ---
@@ -1070,6 +1072,11 @@ app.post("/api/generate-image", authenticateToken, async (req: any, res: any) =>
 });
 
 async function startServer() {
+  if (process.env.NETLIFY === "true") {
+    console.log("Running in Netlify context. Bypassing local startServer port binding.");
+    return;
+  }
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

@@ -298,9 +298,9 @@ export default function CanvasWorkspace({
               </div>
             )}
 
-            {images.map((img) => (
+            {images.map((img, idx) => (
               <div
-                key={img.id}
+                key={`${img.id}-${idx}`}
                 className="bg-bg-elevated border border-border-gold rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(0,240,255,0.1)] transition-all duration-300 flex flex-col group relative hover-3d-card transform-style-3d cursor-default"
               >
                 {/* Photo container */}

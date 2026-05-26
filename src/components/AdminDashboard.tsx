@@ -45,7 +45,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
 
     setUpdatingCreditsId(userId);
     try {
-      const res = await fetch(`/api/admin/users/${userId}/adjust`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/admin/users/${userId}/adjust`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({
@@ -119,7 +119,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
 
     setAdjustSubmitting(true);
     try {
-      const res = await fetch(`/api/admin/users/${selectedUserForAdjustment.id}/adjust`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/admin/users/${selectedUserForAdjustment.id}/adjust`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({
@@ -151,9 +151,9 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
 
     try {
       const [uRes, pRes, payRes] = await Promise.all([
-        fetch("/api/admin/users", { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch("/api/admin/plans", { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch("/api/admin/payments", { headers: { "Authorization": `Bearer ${token}` } })
+        fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/users", { headers: { "Authorization": `Bearer ${token}` } }),
+        fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/plans", { headers: { "Authorization": `Bearer ${token}` } }),
+        fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/payments", { headers: { "Authorization": `Bearer ${token}` } })
       ]);
 
       const [uData, pData, payData] = await Promise.all([uRes.json(), pRes.json(), payRes.json()]);
@@ -238,7 +238,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
     if (!token) return;
 
     try {
-      const res = await fetch(`/api/admin/plans/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/admin/plans/${id}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
@@ -309,7 +309,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
     const method = isNew ? "POST" : "PUT";
 
     try {
-      const res = await fetch(endpoint, {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + endpoint, {
         method,
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({
@@ -356,7 +356,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
       alert("Invalid selection. Signup credits must be a valid non-negative whole number.");
       return;
     }
-    await fetch("/api/admin/settings", {
+    await fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
       body: JSON.stringify({ newUserSignupCredits: credits })
@@ -373,7 +373,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
       alert("Invalid selection. Cost must be a valid non-negative whole number.");
       return;
     }
-    await fetch("/api/admin/settings", {
+    await fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
       body: JSON.stringify({ [key]: val })
@@ -390,7 +390,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
       alert("Invalid selection. UPI ID cannot be empty.");
       return;
     }
-    await fetch("/api/admin/settings", {
+    await fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
       body: JSON.stringify({ paymentUpi: trimmed })
@@ -401,7 +401,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
   const handleUpdateApiSettings = async (updates: any) => {
     const token = localStorage.getItem("whisk_auth_token");
     if (!token) return;
-    await fetch("/api/admin/settings", {
+    await fetch((import.meta.env.VITE_API_URL || "") + "/api/admin/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
       body: JSON.stringify(updates)
@@ -414,7 +414,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
     if (!token) return;
 
     try {
-      const res = await fetch(`/api/admin/plans/${planId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/admin/plans/${planId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ offerActive: !currentActive })
@@ -435,7 +435,7 @@ export default function AdminDashboard({ onLogout, onBackToWorkspace }: AdminDas
     const token = localStorage.getItem("whisk_auth_token");
     if (!token) return;
     try {
-      const res = await fetch(`/api/admin/payments/${paymentId}/${action}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/admin/payments/${paymentId}/${action}`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });

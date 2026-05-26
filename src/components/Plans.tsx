@@ -49,7 +49,9 @@ export default function Plans({ userProfile, onPlanPurchased, onAuthRedirect }: 
     try {
       setLoading(true);
       const token = localStorage.getItem("whisk_auth_token");
-      const url = token ? "/api/user/me" : "/api/plans";
+      const url = token 
+        ? `${import.meta.env.VITE_API_URL || ""}/api/user/me` 
+        : `${import.meta.env.VITE_API_URL || ""}/api/plans`;
       const headers: any = {};
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -80,7 +82,7 @@ export default function Plans({ userProfile, onPlanPurchased, onAuthRedirect }: 
     
     try {
       const token = localStorage.getItem("whisk_auth_token");
-      const res = await fetch("/api/payments", {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/api/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -351,7 +353,7 @@ export default function Plans({ userProfile, onPlanPurchased, onAuthRedirect }: 
                             setErrorMsg("");
                             try {
                               const token = localStorage.getItem("whisk_auth_token");
-                              const res = await fetch(`/api/plans/${selectedPlan.id}/claim-free`, {
+                              const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/plans/${selectedPlan.id}/claim-free`, {
                                 method: 'POST',
                                 headers: {
                                   'Authorization': `Bearer ${token}`
